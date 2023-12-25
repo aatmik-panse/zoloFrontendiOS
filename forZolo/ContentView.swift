@@ -6,9 +6,17 @@ struct ContentView: View {
     // State variables to manage date picker visibility and selected dates
     @State private var isDatePickerVisible = false
     @State private var selectedDates = Set<DateComponents>()
-    
+    @ObservedObject var viewModel = BookViewModel() // ViewModel for managing book data
+
     // The body of the ContentView
     var body: some View {
+        let dateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .none
+            return formatter
+        }()
+
         // A navigation view wrapping the whole content
         NavigationView {
             // A ZStack for layering views on top of each other
@@ -70,6 +78,17 @@ struct ContentView: View {
                     }
                     .padding() // Adding padding around the borrow button
                     .background(Rectangle().foregroundColor(Color(UIColor.secondarySystemBackground)).cornerRadius(15.0).shadow(radius: 20))
+                    
+                    
+                    ForEach(viewModel.bookDetails.prefix(1)) { item in
+                        if let dueDate = item.dueDate {
+                            Text("Available for borrowing till \(dateFormatter.string(from: dueDate))")
+                                .font(.headline)
+//                                .foregroundColor(.secondary)
+                                .font(.headline)
+                                .padding(4)
+                        }
+                    }
                 }
                 .padding() // Adding padding around the VStack containing all views
                 .background(Color(.gray).cornerRadius(15.0).shadow(radius: 30))

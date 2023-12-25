@@ -7,6 +7,7 @@ struct ContentView_Front: View {
     @State private var isAddBookPresented = false // State variable to manage AddBookView presentation
 
     var body: some View {
+
         // A navigation view wrapping the whole content
         NavigationView {
             VStack {
@@ -43,7 +44,7 @@ struct ContentView_Front: View {
 //                                        .padding([.leading, .top, .bottom])
                                         
                                     }
-                                    
+                                   
                                     Spacer()
                                 }
                                 .listRowBackground(Color(.gray))
@@ -68,7 +69,7 @@ struct ContentView_Front: View {
                                     .shadow(radius: 10)
                 Spacer()
             }
-            .padding()
+//            .padding()
             .navigationBarTitle("Book Library")
             .navigationBarItems(trailing:
                 Button(action: {
