@@ -20,6 +20,7 @@ struct ContentView: View {
         // A navigation view wrapping the whole content
         NavigationView {
             // A ZStack for layering views on top of each other
+            
             ZStack {
                 Color(UIColor.systemBackground)
                     .ignoresSafeArea()
@@ -94,7 +95,9 @@ struct ContentView: View {
                 .background(Color(.gray).cornerRadius(15.0).shadow(radius: 30))
                 .padding() // Adding padding around the background rectangle
             }
-            .navigationTitle("Book Details") // Setting the navigation title
+//            .navigationTitle("Book Details") // Setting the navigation title
+            .padding(.top,85)
+            .ignoresSafeArea()
         }
     }
 }
