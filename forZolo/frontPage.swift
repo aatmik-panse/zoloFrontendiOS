@@ -50,8 +50,8 @@ struct ContentView_Front: View {
                 Spacer()
                 TopNavBar(isAddBookPresented: $isAddBookPresented)
                     .padding()
-//                    .background(Color(.white))
-                    .foregroundColor(.primary)
+                    .background(Color(.white))
+//                    .foregroundColor(.white)
                     .cornerRadius(15)
                     .shadow(radius: 10)
             }

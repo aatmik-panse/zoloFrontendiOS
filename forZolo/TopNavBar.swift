@@ -12,9 +12,9 @@ struct TopNavBar: View {
             } label: {
                 Image(systemName: "plus.circle.fill")
                     .font(.title)
-                    .foregroundColor(.primary) // Dynamic color that adapts to light and dark mode
+                    .foregroundColor(.black) // Dynamic color that adapts to light and dark mode
                 Text("Add Book")
-                    .foregroundColor(.primary)
+                    .foregroundColor(.black)
             }
             Spacer()
             Button {
@@ -22,7 +22,7 @@ struct TopNavBar: View {
             } label: {
                 Image(systemName: "house.fill")
                     .font(.title)
-                    .foregroundColor(.primary) // Dynamic color that adapts to light and dark mode
+                    .foregroundColor(.black) // Dynamic color that adapts to light and dark mode
             }
         }
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 10) // Adding shadow to the HStack
