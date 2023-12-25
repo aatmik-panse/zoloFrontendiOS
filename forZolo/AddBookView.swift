@@ -13,6 +13,8 @@ struct AddBookView: View {
     @State private var bookName = ""
     @State private var author = ""
     @State private var imageName = ""
+    @State private var genresText = ""
+
 
     var body: some View {
         // A navigation view wrapping the whole content
@@ -21,7 +23,7 @@ struct AddBookView: View {
                 Section(header: Text("Add Book Details")) {
                     TextField("Book Name", text: $bookName)
                     TextField("Author", text: $author)
-                    TextField("Image Name", text: $imageName)
+                    TextField("Genres (comma separated)", text: $genresText)
                 }
 
                 Section {
@@ -64,48 +66,56 @@ struct AddBookView: View {
 
     // Function to add a new book
     // Function to add a new book
+    // Function to add a new book
     func addBook() {
-        // Ensure that selectedImage is not nil
-        guard let selectedImage = selectedImage else {
-            // Handle the case where no image is selected
+        let genres = genresText.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+        
+        // Ensuring that selectedImage is not nil
+        guard let selectedImage = selectedImage,
+              let imageData = selectedImage.jpegData(compressionQuality: 0.8) else {
+            // Inform user about the error
             return
         }
 
-        // Convert the selectedImage to Data
-        guard let imageData = selectedImage.jpegData(compressionQuality: 0.8) else {
-            // Handle the case where image data cannot be created
-            return
-        }
+        let uniqueImageName = UUID().uuidString + ".jpg"
 
-        // Generate a unique filename for the image
-        var imageName = UUID().uuidString + ".jpg"
-
-        // Save the image to the app's documents directory
-        if let imageURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(imageName) {
-            do {
-                try imageData.write(to: imageURL)
-
-                // Create a new BookList with the image filename
-                let newBook = BookList(name: bookName, by: author, imageName: imageName)
-                
-                // Add the new book to the viewModel
-                viewModel.bookDetails.append(newBook)
-
-                // Clear the form fields
-                bookName = ""
-                author = ""
-                imageName = ""
-
-                // Dismiss the form sheet
-                presentationMode.wrappedValue.dismiss()
-            } catch {
-                // Handle the error if image cannot be saved
-                print("Error saving image: \(error)")
+        saveImage(imageData, withName: uniqueImageName) { success in
+            guard success else {
+                // Inform user that saving the image failed
+                return
             }
+            
+            let newBook = BookList(name: bookName, by: author, imageName: uniqueImageName, dueDate: nil, genre: genres)
+            viewModel.bookDetails.append(newBook)
+            
+            resetForm()
         }
     }
 
+    private func saveImage(_ imageData: Data, withName name: String, completion: @escaping (Bool) -> Void) {
+        guard let imageURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent(name) else {
+            completion(false)
+            return
+        }
+        
+        do {
+            try imageData.write(to: imageURL)
+            completion(true)
+        } catch {
+            print("Error saving image: \(error)")
+            completion(false)
+        }
+    }
+
+    private func resetForm() {
+        bookName = ""
+        author = ""
+        genresText = ""
+        
+        presentationMode.wrappedValue.dismiss()
+    }
 }
+
 import SwiftUI
 
 struct ImagePicker: UIViewControllerRepresentable {

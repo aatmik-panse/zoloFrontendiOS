@@ -2,13 +2,17 @@
 import Foundation
 
 // A struct for holding book details
-struct BookList: Identifiable{
-    var id: UUID = UUID() // Unique identifier for each book
-    var name:String // Name of the book
-    var by:String // Author of the book
-    var imageName:String // Image name for the book cover
-    var lastDate:String="31/12/2023" // Last date for borrowing the book
+struct BookList: Identifiable {
+    let id = UUID()
+    let name: String
+    let by: String
+    let imageName: String
+    var dueDate: Date?  // The date when the book is due to be returned
+    var genre: [String] // The genres of the book
 }
+let numberOfDays: Int = 8
+let date = Calendar.current.date(byAdding: .day, value: numberOfDays, to: Date())
+
 
 // Importing Foundation and Combine libraries
 import Foundation
@@ -17,17 +21,19 @@ import Combine
 // A ViewModel for managing book details
 class BookViewModel: ObservableObject {
     @Published var bookDetails: [BookList] = [
-        BookList(name: "Elon", by: "Naman", imageName: "elon"),
-        BookList(name: "Steve", by: "Ram", imageName: "fan"),
-        BookList(name: "Tata", by: "Raman", imageName: "elon"),
-        BookList(name: "Steve", by: "Ram", imageName: "fan"),
-        BookList(name: "Tata", by: "Raman", imageName: "elon")
+        BookList(name: "Elon", by: "Naman", imageName: "elon", dueDate: date, genre: ["New","Self"]),
+        BookList(name: "Steve", by: "Ram", imageName: "fan", dueDate: date, genre: ["New","Self"]),
+        BookList(name: "Tata", by: "Raman", imageName: "elon", dueDate: date, genre: ["New","Self"]),
+        BookList(name: "Steve", by: "Ram", imageName: "fan", dueDate: date, genre: ["New","Self"]),
+        BookList(name: "Tata", by: "Raman", imageName: "elon", dueDate: date, genre: ["New","Self"]),
+        BookList(name: "Naman", by: "Bheem", imageName: "Good", dueDate: date, genre: ["New","Self"])
     ]
 }
 // Importing SwiftUI library
 import SwiftUI
 
 // A view for adding new books
+
 struct AddBook: View {
     // State variables to hold form field values
     @State private var bookName = ""
@@ -70,13 +76,43 @@ struct AddBook: View {
 
     // Function to add a new book
     func addBook() {
-        let newBook = BookList(name: bookName, by: author, imageName: imageName)
+        let newGenres = ["Genre1", "Genre2"] // Replace with actual genres or get them from user input
+        let newBook = BookList(name: bookName, by: author, imageName: imageName, dueDate: Date(), genre: newGenres)
         viewModel.bookDetails.append(newBook)
 
         // Clear the form fields
         bookName = ""
         author = ""
         imageName = ""
+    }
+
+}
+struct AddNewBookView: View {
+    @ObservedObject var viewModel: BookViewModel
+    @State private var name = ""
+    @State private var author = ""
+    @State private var dueDate = Date()
+    @State private var genre = ""
+
+    var body: some View {
+        NavigationView {
+            Form {
+                TextField("Book Name", text: $name)
+                TextField("Author", text: $author)
+                DatePicker("Available Until", selection: $dueDate, displayedComponents: .date)
+                TextField("Genre (comma separated)", text: $genre)
+                
+                Button("Add Book") {
+                    let genres = genre.components(separatedBy: ", ").filter { !$0.isEmpty }
+                    let newBook = BookList(name: name, by: author, imageName: "default", dueDate: dueDate, genre: genres)
+                    viewModel.bookDetails.append(newBook) // Append directly to the array
+
+                    // Clearing the form fields can be done here if needed
+                }
+
+            }
+            .navigationBarTitle("Add Book", displayMode: .inline)
+        }
     }
 }
 

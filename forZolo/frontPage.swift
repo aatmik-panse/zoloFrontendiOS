@@ -22,15 +22,29 @@ struct ContentView_Front: View {
                                         .frame(width: 100, height: 150)
                                         .cornerRadius(15.0)
                                     
-                                    Text(item.name)
-                                        .font(.title2)
-                                        .fontWeight(.bold)
-                                        .padding()
+                                    VStack(alignment: .leading) {
+                                        Text(item.name)
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                        
+                                        Text("by \(item.by)")
+                                            .font(.subheadline)
+                                    }
                                     Spacer()
-                                    VStack(alignment: .trailing ){
-                                        Text("by:" )
-                                        Text(item.by)
-                                    }.padding()
+                                    // Display genres
+                                    VStack{
+                                        Text("Genres:")
+                                            .font(.callout)
+                                        
+                                        Text(item.genre.joined(separator: ", "))
+                                            .font(.callout)
+                                            .foregroundColor(.secondary)
+                                        
+//                                        .padding([.leading, .top, .bottom])
+                                        
+                                    }
+                                    
+                                    Spacer()
                                 }
                                 .listRowBackground(Color(.gray))
                             }
@@ -39,24 +53,30 @@ struct ContentView_Front: View {
                     .listStyle(.plain)
                 }
                 .cornerRadius(15)
-
-                // Add Book Button
-                Button(action: {
-                    isAddBookPresented.toggle()
-                }) {}
-                .sheet(isPresented: $isAddBookPresented) {
-                    AddBookView(viewModel: viewModel)
-                }
                 Spacer()
+                Button(action: {
+                                    isAddBookPresented.toggle()
+                                }) {}
+                                .sheet(isPresented: $isAddBookPresented) {
+                                    AddBookView(viewModel: viewModel)
+                                }
                 TopNavBar(isAddBookPresented: $isAddBookPresented)
-                    .padding()
-                    .background(Color(.white))
-//                    .foregroundColor(.white)
-                    .cornerRadius(15)
-                    .shadow(radius: 10)
+                                    .padding()
+                                    .background(Color(.white))
+                //                    .foregroundColor(.white)
+                                    .cornerRadius(15)
+                                    .shadow(radius: 10)
+                Spacer()
             }
             .padding()
             .navigationBarTitle("Book Library")
+            .navigationBarItems(trailing:
+                Button(action: {
+                    isAddBookPresented.toggle()
+                }) {
+                    
+                }
+            )
         }
     }
 }
