@@ -26,7 +26,7 @@ Press Cmd + R to build and run the application.
 Usage
 Upon launching the app, you will be presented with the main screen displaying a list of books. You can tap on a book to view its details or use the "Add Book" button to add a new book to the library.
 
-Adding a Book
+#Adding a Book
 Tap on the "Add Book" button.
 Fill in the book's name, author, and image name fields.
 Tap "Add Book" to save the new book to the library.
@@ -35,7 +35,7 @@ Select a book from the list to view its details.
 Tap on "Borrow This Book" to select borrowing dates.
 Choose your dates and confirm.
 
-Contributing
+#Contributing
 Contributions are welcome! If you'd like to contribute, please follow these steps:
 
 Fork the repository.
