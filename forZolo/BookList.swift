@@ -10,9 +10,9 @@ struct BookList: Identifiable {
     var dueDate: Date?  // The date when the book is due to be returned
     var genre: [String] // The genres of the book
 }
-let numberOfDays: Int = 8
+let numberOfDays: Int = 10
 let date = Calendar.current.date(byAdding: .day, value: numberOfDays, to: Date())
-
+// Need to code for taking the Availability of book
 
 // Importing Foundation and Combine libraries
 import Foundation
@@ -76,7 +76,7 @@ struct AddBook: View {
 
     // Function to add a new book
     func addBook() {
-        let newGenres = ["Genre1", "Genre2"] // Replace with actual genres or get them from user input
+        let newGenres = ["", ""] // Replace with actual genres or get them from user input
         let newBook = BookList(name: bookName, by: author, imageName: imageName, dueDate: Date(), genre: newGenres)
         viewModel.bookDetails.append(newBook)
 

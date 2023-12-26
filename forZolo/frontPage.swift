@@ -56,11 +56,11 @@ struct ContentView_Front: View {
                 .cornerRadius(15)
                 Spacer()
                 Button(action: {
-                                    isAddBookPresented.toggle()
-                                }) {}
-                                .sheet(isPresented: $isAddBookPresented) {
-                                    AddBookView(viewModel: viewModel)
-                                }
+                    isAddBookPresented.toggle()
+                    }) {}
+                    .sheet(isPresented: $isAddBookPresented) {
+                        AddBookView(viewModel: viewModel)
+                    }
                 TopNavBar(isAddBookPresented: $isAddBookPresented)
                                     .padding()
                                     .background(Color(.white))

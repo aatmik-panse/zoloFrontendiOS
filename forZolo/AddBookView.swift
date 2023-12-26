@@ -1,3 +1,5 @@
+// image adder not coded by me 
+
 // Importing SwiftUI library
 import SwiftUI
 
@@ -44,7 +46,6 @@ struct AddBookView: View {
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                 }
-                           // ... existing code ...
 
                            Button("Select Image") {
                                isImagePickerPresented = true
@@ -64,9 +65,8 @@ struct AddBookView: View {
         }
     }
 
-    // Function to add a new book
-    // Function to add a new book
-    // Function to add a new book
+    //not working
+    
     func addBook() {
         let genres = genresText.components(separatedBy: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
         

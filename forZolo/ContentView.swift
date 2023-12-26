@@ -109,7 +109,7 @@ struct DatePickerView: View {
 
     var body: some View {
         VStack {
-            Text("Pick all the dates you want to borrow the book for") // Add the title here
+            Text("Pick all the dates you want to borrow the book for")
                 .font(.headline)
                 .padding()
 
