@@ -1,7 +1,6 @@
 // Importing SwiftUI library
 import SwiftUI
 
-// Main view of the app
 struct ContentView: View {
     // State variables to manage date picker visibility and selected dates
     @State private var isDatePickerVisible = false
@@ -48,14 +47,14 @@ struct ContentView: View {
                         VStack {
                             // Displaying rating using star images
                             HStack {
-                                Image(systemName: "star.fill").foregroundColor(.orange)
-                                Image(systemName: "star.fill").foregroundColor(.orange)
-                                Image(systemName: "star.fill").foregroundColor(.orange)
-                                Image(systemName: "star.fill").foregroundColor(.orange)
-                                Image(systemName: "star.leadinghalf.filled").foregroundColor(.orange)
-                            }
-                            .font(.caption) // Setting font size for rating stars
-                            Text("Reviews 123") // Displaying review count
+                                Image(systemName: "star.fill")
+                                Image(systemName: "star.fill")
+                                Image(systemName: "star.fill")
+                                Image(systemName: "star.fill")
+                                Image(systemName: "star.leadinghalf.filled")
+                            }.foregroundColor(.orange)
+                            .font(.caption)
+                            Text("Reviews 123")
                                 .foregroundColor(.primary)
                         }
                     }.foregroundColor(.primary)
@@ -85,7 +84,6 @@ struct ContentView: View {
                         if let dueDate = item.dueDate {
                             Text("Available for borrowing till \(dateFormatter.string(from: dueDate))")
                                 .font(.headline)
-//                                .foregroundColor(.secondary)
                                 .font(.headline)
                                 .padding(4)
                         }
@@ -106,15 +104,16 @@ struct ContentView: View {
 struct DatePickerView: View {
     @Binding var selectedDates: Set<DateComponents>
     @State private var showAlert = false // State variable to manage alert presentation
+    @State private var selectedDate = Date()
 
     var body: some View {
         VStack {
-            Text("Pick all the dates you want to borrow the book for")
+            Text("Pick the date you want to borrow the book until")
                 .font(.headline)
                 .padding()
 
-            MultiDatePicker("Select Dates", selection: $selectedDates, in: Date()...)
-                .datePickerStyle(WheelDatePickerStyle())
+            DatePicker("Select Date", selection: $selectedDate, in: Date()...tenDaysFromNow, displayedComponents: .date)
+                .datePickerStyle(.graphical)
                 .labelsHidden()
                 .padding()
 
@@ -124,9 +123,12 @@ struct DatePickerView: View {
             }
             .padding()
             .alert(isPresented: $showAlert) { // Alert presentation
-                Alert(
+                let borrowedDays = calculateBorrowedDays()
+                let confirmationMessage = "The book has been borrowed until \(dateFormatter.string(from: selectedDate)).\nTotal Borrowed Days: \(borrowedDays) days."
+                
+                return Alert(
                     title: Text("Confirmation"),
-                    message: Text("The book has been borrowed for \(selectedDates.count) days."), // Displaying the number of days
+                    message: Text(confirmationMessage),
                     dismissButton: .default(Text("OK"))
                 )
             }
@@ -134,18 +136,35 @@ struct DatePickerView: View {
         .navigationTitle("Select Date")
     }
 
+    var tenDaysFromNow: Date {
+        return Calendar.current.date(byAdding: .day, value: 10, to: Date()) ?? Date()
+    }
+
     // Function to print selected dates
     func printSelectedDates() {
         let calendar = Calendar.current
-        selectedDates.forEach { dateComponents in
-            if let date = calendar.date(from: dateComponents) {
-                print("Selected Date: \(date)")
-            }
+        let dateComponents = calendar.dateComponents([.year, .month, .day], from: selectedDate)
+        if let date = calendar.date(from: dateComponents) {
+            print("Selected Date: \(date)")
         }
     }
+
+    // Function to calculate borrowed days
+    func calculateBorrowedDays() -> Int {
+        let calendar = Calendar.current
+        let currentDate = calendar.startOfDay(for: Date())
+        let selectedDateStartOfDay = calendar.startOfDay(for: selectedDate)
+        let borrowedDays = calendar.dateComponents([.day], from: currentDate, to: selectedDateStartOfDay).day ?? 0
+        return borrowedDays
+    }
+
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
 }
-
-
 
 // Preview provider for ContentView
 struct ContentView_Previews: PreviewProvider {

@@ -40,9 +40,7 @@ struct ContentView_Front: View {
                                         Text(item.genre.joined(separator: ", "))
                                             .font(.callout)
                                             .foregroundColor(.secondary)
-                                        
-//                                        .padding([.leading, .top, .bottom])
-                                        
+                                                                                
                                     }
                                    
                                     Spacer()
@@ -64,12 +62,10 @@ struct ContentView_Front: View {
                 TopNavBar(isAddBookPresented: $isAddBookPresented)
                                     .padding()
                                     .background(Color(.white))
-                //                    .foregroundColor(.white)
                                     .cornerRadius(15)
                                     .shadow(radius: 10)
                 Spacer()
             }
-//            .padding()
             .navigationBarTitle("Book Library")
             .navigationBarItems(trailing:
                 Button(action: {
