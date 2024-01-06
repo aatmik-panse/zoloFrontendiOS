@@ -1,4 +1,3 @@
-// Importing SwiftUI library
 import SwiftUI
 
 // Front view of the app
@@ -7,9 +6,8 @@ struct ContentView_Front: View {
     @State private var isAddBookPresented = false // State variable to manage AddBookView presentation
 
     var body: some View {
-
-        // A navigation view wrapping the whole content
-        NavigationView {
+        // A navigation stack wrapping the whole content
+        NavigationStack {
             VStack {
                 ZStack {
                     List {
@@ -42,38 +40,36 @@ struct ContentView_Front: View {
                                             .foregroundColor(.secondary)
                                                                                 
                                     }
-                                   
-                                    Spacer()
                                 }
-                                .listRowBackground(Color(.gray))
                             }
                         }
-                    }
-                    .listStyle(.plain)
+                    }.listStyle(.grouped)
                 }
                 .cornerRadius(15)
                 Spacer()
                 Button(action: {
                     isAddBookPresented.toggle()
-                    }) {}
-                    .sheet(isPresented: $isAddBookPresented) {
-                        AddBookView(viewModel: viewModel)
-                    }
+                }) {
+                }
+                .sheet(isPresented: $isAddBookPresented) {
+                    AddBookView(viewModel: viewModel)
+                }
                 TopNavBar(isAddBookPresented: $isAddBookPresented)
                                     .padding()
-                                    .background(Color(.white))
+                                    .background(Color.white)
                                     .cornerRadius(15)
                                     .shadow(radius: 10)
                 Spacer()
             }
-            .navigationBarTitle("Book Library")
-            .navigationBarItems(trailing:
-                Button(action: {
-                    isAddBookPresented.toggle()
-                }) {
-                    
+            .navigationTitle("Book Library")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        isAddBookPresented.toggle()
+                    }) {
+                    }
                 }
-            )
+            }
         }
     }
 }
