@@ -38,12 +38,13 @@ struct ContentView_Front: View {
                                         Text(item.genre.joined(separator: ", "))
                                             .font(.callout)
                                             .foregroundColor(.secondary)
-                                                                                
                                     }
                                 }
                             }
-                        }
-                    }.listStyle(.grouped)
+                        }.listRowSeparator(.hidden)
+                    }.listStyle(.insetGrouped)
+                    .listRowBackground(Color.clear)
+                    .listRowSpacing(10)
                 }
                 .cornerRadius(15)
                 Spacer()
