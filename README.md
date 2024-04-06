@@ -1,4 +1,4 @@
-# forZoloAssignment
+# zoloFrontendiOS
 
 forZoloApp is a SwiftUI-based iOS application designed to manage a virtual book library. Users can browse a list of books, add new books to the library, and borrow books by selecting dates.
 
